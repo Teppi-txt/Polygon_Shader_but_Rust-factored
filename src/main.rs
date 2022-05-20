@@ -45,7 +45,8 @@ fn get_best_shape(shapes_per_gen: i32, child_n: i32, shapes_survive: i32) {
                     poly_list.push(Point::new(point.0, point.1));
                 }
                 draw_polygon_mut(&mut comparison_image, &poly_list, image::Rgba(shape_color));
-            }
+            },
+            3 => draw_cross_mut(&mut comparison_image, image::Rgba(shape_color), shape_data[0].0 ,shape_data[0].1),
             _ => panic!("shape type returned an unexpected value!?"),
         }
         comparison_image.save("src/output/test.png").unwrap();

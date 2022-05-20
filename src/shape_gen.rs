@@ -24,7 +24,8 @@ pub fn generate_shape_data(shape_type: i32, width: i32, height: i32) -> Vec<(i32
                 poly_list.push((rng.gen_range(0..=width), rng.gen_range(0..=height)));
             }
             return poly_list;
-        }
+        },
+        3 => return vec![(rng.gen_range(0..=width), rng.gen_range(0..=height))],
         _ => panic!("Gen range returned an unexpected value!?"),
     }
 }
