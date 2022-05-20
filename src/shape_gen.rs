@@ -11,3 +11,8 @@ pub fn generate_shape_type() -> i32 {
     let shape_type = 0;//rng.gen_range(0..=0);
     return shape_type;
 }
+
+pub fn generate_shape_color() -> [u8, u8 ,u8] {
+    use rand::{thread_rng, Rng};
+    return [rng.gen_range(0..=255), rng.gen_range(0..=255), rng.gen_range(0..=255)];
+}

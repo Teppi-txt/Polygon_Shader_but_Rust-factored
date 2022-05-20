@@ -21,13 +21,11 @@ fn main() {
 
     for i in 0..100{
         let shape_data = shape_gen::generate_shape_data(0, img_x, img_y);
+        let shape_color = shape_gen::generate_shape_color();
         println!("{:#?}", shape_data);
-        draw_filled_circle_mut(&mut imgbuf, shape_data[0], shape_data[1].0, image::Rgb([255 as u8, 0 as u8, 255 as u8]));
+        draw_filled_circle_mut(&mut imgbuf, shape_data[0], shape_data[1].0, image::Rgb(shape_color));
         println!{"done"};
     }
     
-    
-
-    target_image.save("src/output/woah.png").unwrap();
-    imgbuf.save("test.png").unwrap();
+    imgbuf.save("src/output/woah.png").unwrap();
 }
