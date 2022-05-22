@@ -41,3 +41,22 @@ pub fn generate_shape_color() -> [u8; 4] {
     let mut rng = thread_rng();
     return [rng.gen_range(0..=255), rng.gen_range(0..=255), rng.gen_range(0..=255), rng.gen_range(0..=255)];
 }
+
+pub fn shift_shape_data(old_data: Vec<((i32, i32))>) -> Vec<((i32, i32))> {
+    use rand::{thread_rng, Rng};
+    let mut rng = thread_rng();
+    let mut new_data: Vec<(i32, i32)> = Vec::new();
+    let evo_factor = 40;
+
+    for point in old_data.clone() {
+        new_data.push((std::cmp::max(0, point.0 + rng.gen_range(0..=evo_factor)), std::cmp::max(0, point.0 + rng.gen_range(0..=evo_factor))));
+    }
+    return new_data;
+}
+
+pub fn shift_shape_color(old_color: [u8; 4]) -> [u8; 4] {
+    use rand::{thread_rng, Rng};
+    let mut rng = thread_rng();
+    let evo_factor = 20;
+    return [old_color[0] + rng.gen_range(0..=evo_factor),  old_color[1] + rng.gen_range(0..=evo_factor), old_color[2] + rng.gen_range(0..=evo_factor), old_color[3] + rng.gen_range(0..=evo_factor)];
+}
