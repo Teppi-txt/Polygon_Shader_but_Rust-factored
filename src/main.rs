@@ -13,7 +13,7 @@ struct Shape {
     id: i32,
     data: Vec<(i32, i32)>,
     color: [u8; 4],
-    fitness: i32
+    fitness: f64
 }
 
 fn main() {
@@ -51,7 +51,7 @@ fn get_best_shape(shapes_per_gen: i32, child_n: usize, shapes_survive: i32) {
         shape_list.push(draw_shape(shape_type, shape_data, shape_color));
     }
 
-    shape_list.sort_by_key(|k| k.fitness);
+    shape_list.sort_by(|a, b| a.fitness.partial_cmp(&b.fitness).unwrap());
     shape_list.truncate(child_n);
     println!{"{:#?}", shape_list};
 

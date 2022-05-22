@@ -13,10 +13,10 @@ pub fn generate_shape_data(shape_type: i32, width: i32, height: i32) -> Vec<(i32
 
     match shape_type {
         //[(center_x, center_y), (radius_x, radius_y)]
-        0 => return vec![(rng.gen_range(0..=width), rng.gen_range(0..=height)), (rng.gen_range(0..=width/2), rng.gen_range(0..=height/2))],
+        0 => return vec![(rng.gen_range(0..=width), rng.gen_range(0..=height)), (rng.gen_range(1..=width/2), rng.gen_range(1..=height/2))],
 
         //[(start_x, start_y), (width, width_y)]
-        1 => return vec![(rng.gen_range(0..=width), rng.gen_range(0..=height)), (rng.gen_range(0..=width), rng.gen_range(0..=height))],
+        1 => return vec![(rng.gen_range(0..=width), rng.gen_range(0..=height)), (rng.gen_range(1..=width), rng.gen_range(1..=height))],
 
         2 => {
             let mut poly_list = Vec::new();
