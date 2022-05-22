@@ -19,6 +19,9 @@ struct Shape {
 
 fn main() {
     let target_image = open("src/input/img.png").unwrap();
+   /*  println!{"{:#?}", math::get_mean_point(1, vec![(0, 0), (700, 700), (250, 150)])};
+    println!{"{:#?}", math::get_mean_point(0, vec![(0, 0), (700, 700), (250, 150)])};
+    println!{"{:#?}", math::get_mean_point(3, vec![(0, 0), (700, 700), (250, 150)])}; */
 
     let img_x: i32 = 728;
     let img_y: i32 = 500;
@@ -31,10 +34,9 @@ fn main() {
     //println!{"{:#?}", imgbuf.clone().into_vec()};
     imgbuf.save("src/output/output.png").unwrap();
 
-    /* for i in 0..100{
-        get_best_shape(5, 10, 10);
-    } */
-    get_best_shape(700, 10, 10);
+    for i in 0..10{
+        get_best_shape(700, 10, 10);
+    }
 }
 
 fn get_best_shape(shapes_per_gen: i32, child_n: usize, shapes_survive: i32) {
@@ -49,7 +51,7 @@ fn get_best_shape(shapes_per_gen: i32, child_n: usize, shapes_survive: i32) {
         let shape_data = shape_gen::generate_shape_data(shape_type, width, height);
         let shape_color = shape_gen::generate_shape_color();
 
-        shape_list.push(draw_shape(shape_type, shape_data, shape_color));
+        shape_list.push(format_shape(shape_type, shape_data, shape_color, false));
     }
 
     for gen in 0..child_n {
@@ -58,9 +60,11 @@ fn get_best_shape(shapes_per_gen: i32, child_n: usize, shapes_survive: i32) {
         shape_list.truncate(shapes_survive as usize);
         shape_list = mutate(&shape_list, child_n);
     }
+
+    format_shape(shape_list[0].id.clone(), shape_list[0].data.clone(), shape_list[0].color.clone(), true);
 }
 
-fn draw_shape(shape_type: i32, shape_data: Vec<(i32, i32)>, shape_color: [u8; 4]) -> Shape {
+fn format_shape(shape_type: i32, shape_data: Vec<(i32, i32)>, shape_color: [u8; 4], draw_shape: bool) -> Shape {
     let mut target_image = open("src/input/img.png").unwrap();
     let mut comparison_image = open("src/output/output.png").unwrap().clone();
     match shape_type {
@@ -76,7 +80,12 @@ fn draw_shape(shape_type: i32, shape_data: Vec<(i32, i32)>, shape_color: [u8; 4]
         3 => draw_cross_mut(&mut comparison_image, image::Rgba(shape_color), shape_data[0].0 ,shape_data[0].1),
         _ => panic!("shape type returned an unexpected value!?"),
     }
+
+    if draw_shape {
+        comparison_image.save("src/output/output.png").unwrap();
+    }
     return Shape{id: shape_type, data: shape_data, color: shape_color, fitness: math::image_compare(target_image.as_bytes().to_vec(), comparison_image.as_bytes().to_vec())}
+    
 }
 
 fn mutate(shape_list: &Vec<Shape>, child_n: usize) -> Vec<Shape> {
@@ -91,7 +100,7 @@ fn mutate(shape_list: &Vec<Shape>, child_n: usize) -> Vec<Shape> {
             let new_data = shape_gen::shift_shape_data(shape.data.clone());
             let new_color = shape_gen::shift_shape_color(shape.color.clone());
             //println!{"{:#?} -> {:#?} {:#?} {:#?}", shape, shape.id.clone(), new_data, new_color};
-            new_list.push(draw_shape(shape.id.clone(), new_data, new_color));
+            new_list.push(format_shape(shape.id.clone(), new_data, new_color, false));
         }
     };
     return new_list;
